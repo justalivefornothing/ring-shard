@@ -93,13 +93,18 @@ export class Ring {
    * Returns fewer than `n` when the ring has fewer nodes.
    */
   successors(key: string, n: number): string[] {
+    return this.successorVnodes(key, n).map((v) => v.node)
+  }
+
+  /** Same walk as `successors`, but returns the vnode at which each new node was first met. */
+  successorVnodes(key: string, n: number): Vnode[] {
     if (this.size === 0) return []
     const want = Math.min(n, this.nodeList.length)
-    const out: string[] = []
+    const out: Vnode[] = []
     let i = this.lookupIndex(key)
     while (out.length < want) {
       const node = this.ownerAt(i)
-      if (!out.includes(node)) out.push(node)
+      if (!out.some((v) => v.node === node)) out.push({ hash: this.hashes[i]!, node, index: i })
       i = (i + 1) % this.size
     }
     return out
