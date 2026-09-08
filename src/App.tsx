@@ -1,5 +1,7 @@
 import { useMemo, useReducer, useState } from 'react'
+import { loadStats } from './core/stats'
 import { Controls } from './ui/Controls'
+import { Rail } from './ui/Rail'
 import { RingView, type Mode } from './ui/RingView'
 import { KEYS, initialTopology, topologyReducer } from './ui/topology'
 
@@ -11,6 +13,11 @@ export default function App() {
   const [focusNode, setFocusNode] = useState<string | null>(null)
 
   const slotOf = useMemo(() => Object.fromEntries(state.nodes.map((n) => [n.id, n.slot])), [state.nodes])
+  const ids = useMemo(() => state.nodes.map((n) => n.id), [state.nodes])
+  const stats = useMemo(
+    () => loadStats(mode === 'consistent' ? state.owners : state.modOwners, ids, KEYS),
+    [mode, state.owners, state.modOwners, ids],
+  )
 
   return (
     <div className="min-h-screen bg-ink font-mono text-amber">
@@ -24,7 +31,7 @@ export default function App() {
         </p>
       </header>
 
-      <main className="mx-auto grid max-w-[1240px] grid-cols-1 gap-6 px-4 py-5 sm:px-6">
+      <main className="mx-auto grid max-w-[1240px] grid-cols-1 gap-6 px-4 py-5 sm:px-6 lg:grid-cols-[minmax(0,1fr)_340px]">
         <section className="flex flex-col gap-5" aria-label="ring">
           <div className="flex justify-center">
             <RingView
@@ -50,6 +57,17 @@ export default function App() {
             onFocusNode={setFocusNode}
           />
         </section>
+
+        <Rail
+          state={state}
+          stats={stats}
+          mode={mode}
+          slotOf={slotOf}
+          lookupKey={lookupKey}
+          replication={replication}
+          focusNode={focusNode}
+          onFocusNode={setFocusNode}
+        />
       </main>
 
       <footer className="px-4 pb-6 text-[11px] text-amber-dim sm:px-6">
