@@ -6,7 +6,7 @@ import { SHOWN_KEYS, type TopologyState } from './topology'
 
 export type Mode = 'consistent' | 'modulo'
 
-const SIZE = 600
+const SIZE = 620 // leaves ~20px around the outermost labels so "270°" is never clipped
 const C = SIZE / 2
 const R = 222 // band radius
 const BAND = 12
@@ -195,7 +195,7 @@ export function RingView({ state, mode, slotOf, lookupKey, replication, focusNod
               className={consistent ? 'ghost ghost-slide' : 'ghost ghost-scatter'}
               style={{ ['--from' as string]: `${g.from}deg`, ['--to' as string]: `${g.to}deg` }}
             >
-              <circle cx={C} cy={C - DOT_R} r={4.5} fill={color(g.node)} stroke={INK} strokeWidth={1} />
+              <circle cx={C} cy={C - DOT_R} r={5.5} fill={color(g.node)} stroke={AMBER_GLOW} strokeWidth={1.5} />
             </g>
           ))}
         </g>

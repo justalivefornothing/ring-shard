@@ -30,7 +30,7 @@ export function Controls(p: Props) {
       <div className="flex flex-col gap-2">
         <div className="flex items-baseline justify-between">
           <span className={label}>nodes · {p.nodes.length}/{MAX_NODES}</span>
-          <span className="text-[11px] text-amber-dim">hover a node to isolate it</span>
+          <span className="text-[11px] text-amber-dim">hover or focus a node to isolate it</span>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           {p.nodes.map((n) => (
@@ -46,7 +46,10 @@ export function Controls(p: Props) {
               </span>
               <button
                 type="button"
-                onClick={() => p.dispatch({ type: 'remove', id: n.id })}
+                onClick={() => {
+                  p.onFocusNode(null)
+                  p.dispatch({ type: 'remove', id: n.id })
+                }}
                 onFocus={() => p.onFocusNode(n.id)}
                 onBlur={() => p.onFocusNode(null)}
                 aria-label={`remove node ${n.id}`}
@@ -78,7 +81,7 @@ export function Controls(p: Props) {
               max={200}
               value={p.vnodes}
               onChange={(e) => p.dispatch({ type: 'vnodes', value: Number(e.target.value) })}
-              className="w-full accent-amber"
+              className="w-full accent-amber focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-amber"
             />
             <input
               type="number"

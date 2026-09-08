@@ -124,9 +124,11 @@ export function Rail({ state, stats, mode, slotOf, lookupKey, replication, focus
               </div>
             ))}
             <p className="mt-2 text-[12px] text-amber-dim">
-              {lastChange.ring.moved.length > 0
-                ? `modulo moved ${(lastChange.modulo.moved.length / lastChange.ring.moved.length).toFixed(1)}× as many keys for the same change.`
-                : 'no keys moved on the ring.'}
+              {lastChange.modulo.moved.length === 0
+                ? 'hash % N only sees the node count, so vnode changes cost it nothing — and buy it nothing.'
+                : lastChange.ring.moved.length === 0
+                  ? 'no keys moved on the ring.'
+                  : `modulo moved ${(lastChange.modulo.moved.length / lastChange.ring.moved.length).toFixed(1)}× as many keys for the same change.`}
             </p>
           </>
         ) : (

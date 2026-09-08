@@ -10,10 +10,12 @@ export default function App() {
   const [mode, setMode] = useState<Mode>('consistent')
   const [lookupKey, setLookupKey] = useState('user:42')
   const [replication, setReplication] = useState(3)
-  const [focusNode, setFocusNode] = useState<string | null>(null)
+  const [rawFocus, setFocusNode] = useState<string | null>(null)
 
   const slotOf = useMemo(() => Object.fromEntries(state.nodes.map((n) => [n.id, n.slot])), [state.nodes])
   const ids = useMemo(() => state.nodes.map((n) => n.id), [state.nodes])
+  // A node removed while hovered/focused never fires mouseleave/blur; never let a ghost node dim the ring.
+  const focusNode = rawFocus !== null && rawFocus in slotOf ? rawFocus : null
   const stats = useMemo(
     () => loadStats(mode === 'consistent' ? state.owners : state.modOwners, ids, KEYS),
     [mode, state.owners, state.modOwners, ids],
