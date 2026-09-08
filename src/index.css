@@ -1,0 +1,15 @@
+@import 'tailwindcss';
+@import '@fontsource/ibm-plex-mono/400.css';
+@import '@fontsource/ibm-plex-mono/500.css';
+@import '@fontsource/ibm-plex-mono/600.css';
+
+@theme {
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --color-ink: #0b0a08;
+  --color-panel: #12110d;
+  --color-line: #2a2618;
+  --color-amber: #e6a23c;
+  --color-amber-dim: #9a6d2a;
+  --color-amber-faint: #4a3a1c;
+  --color-amber-glow: #ffd27a;
+}
